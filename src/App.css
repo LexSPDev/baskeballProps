@@ -1,0 +1,45 @@
+.playersList{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+}
+.playerItem{
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.oddsItem{
+  display: flex;
+  flex-direction: column;
+}
+
+.oddsList{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+}
+
+.marketsWrapper{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.marketsOdds{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.odds{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.marketName{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px;
+}

@@ -1,0 +1,124 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-size: 15px;
+}
+div {
+  text-align: center;
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.playersWrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+}
+.playersIcon{
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: black;
+}
+.gameWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.gameItem{
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.marketItem{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.mainMarket{
+  background-color: #e0e0e0;
+    border: 2px solid black;
+  border-radius: 50px;
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.gamesPerformance{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.marketItemOdds{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px;
+}
+
+/* Fuerza que las filas se mantengan en una sola línea */
+.playersWrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap; /* 🔥 No permite saltos de línea en toda la tabla */
+}
+
+/* Estilos generales de celdas */
+.playersWrapper th,
+.playersWrapper td {
+  padding: 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Si algo se pasa del ancho, agrega “...” */
+}
+
+/* Columnas específicas para mantener proporciones */
+.playersWrapper th:nth-child(7),
+.playersWrapper th:nth-child(8),
+.playersWrapper td:nth-child(7),
+.playersWrapper td:nth-child(8) {
+  width: 200px;
+}
+
+/* Los spans se muestran en línea (uno al lado del otro) */
+.lastFiveItem,
+.lastAgainstItem {
+  display: inline-block;
+  width: 28px;      /* mismo ancho para cada span */
+  text-align: center;
+  background: #f6f6f6;
+  color: black;
+  font-size: 0.85em;
+}
+
+.green{
+  background-color: green;
+
+}
