@@ -18,7 +18,7 @@ div {
   text-align: center;
 }
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
 }
@@ -42,14 +42,6 @@ div {
   display: flex;
   justify-content: center;
   width: 100%;
-}
-.gameItem{
-  margin: 5px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: black;
 }
 
 .marketItem{
@@ -121,4 +113,43 @@ div {
 .green{
   background-color: green;
 
+}
+
+.lowgreen{
+  background-color: rgb(3, 115, 68);
+}
+.marketsGames{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.dvpWrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  gap: 10px;
+  font-size: 20px;
+}
+.playerName{
+  font-size: 40px;
+  font-weight: 500;
+}
+.playerPosition{
+  font-size: 32px;
+  font-weight: 100;
+}
+.gap{
+  display: flex;
+  justify-content: center;
+  text-align:justify;
+  gap: 10px;
+}
+
+.goodMatchup{
+  color: rgb(5, 205, 5);
+}
+
+.nonMatchup{
+  color: black;
 }

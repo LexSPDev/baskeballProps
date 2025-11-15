@@ -1,45 +1,202 @@
-.playersList{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
-}
-.playerItem{
-  margin: 5px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: black;
-}
-
-.oddsItem{
-  display: flex;
-  flex-direction: column;
-}
-
-.oddsList{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-}
-
-.marketsWrapper{
+.marketsWrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
-.marketsOdds{
-  display: flex;
-  flex-direction: column;
+.star-corner {
+  /* Establece la posición relativa para que los pseudo-elementos se posicionen con respecto a este contenedor */
+  position: relative;
+  /* (Opcional) Añade padding para que la estrella no oculte el contenido del elemento */
+  padding-top: 20px;
+}
+.star-corner-none{
+  padding-top: 20px;
+}
+.star-corner::after {
+  /* Inserta el carácter de estrella (puedes usar el unicode \2605 para una estrella sólida) */
+  content: "\2605";
+
+  /* Posicionamiento absoluto para colocarlo en la esquina */
+  position: absolute;
+  top: 0; /* Arriba */
+  right: 0; /* Derecha */
+
+  /* Color verde oscuro */
+  color: #a8f6a8; /* DarkGreen */
+
+  /* Ajusta el tamaño de la fuente para que la estrella sea visible */
+  font-size: 2em;
+
+  /* (Opcional) Asegura que la estrella siempre esté visible */
+  z-index: 10;
 }
 
-
-.odds{
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+a {
+  text-decoration: none;
 }
-.marketName{
+
+.statusWrapper{
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.gameWrapper{
+  display: grid;
+  /* Define 4 columnas: 
+     - La 1ra columna (primary-data) ocupa 2 partes (2fr).
+     - Las otras 3 columnas (secondary-data) ocupan 1 parte cada una (1fr). 
+     Esto hace que el primer elemento sea el doble de grande que los otros. */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr ; 
+  gap: 10px; /* Espacio entre los elementos */
+  width: 100%;
+  max-width: 600px; /* Limita el tamaño total del contenedor */
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+}
+
+.games{
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.playerWrapper{
+  width: 50%;
+}
+
+/* 1. CLASE PRINCIPAL: Apariencia base del botón */
+.modern-button {
+  /* Diseño */
+  display: inline-flex; /* Asegura que el contenido esté centrado y respete el padding */
   align-items: center;
   justify-content: center;
-  height: 55px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px; /* Bordes redondeados */
+  cursor: pointer;
+  
+  /* Color y Tipografía */
+  background-color: #00b35a; /* Azul primario */
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none; /* Útil para enlaces (<a>) */
+  margin-bottom: 10px;
+  
+  /* Transición (para efectos suaves) */
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  
+  /* Sombra sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* 2. EFECTO HOVER: Cuando el ratón está encima */
+.modern-button:hover {
+  background-color: #00b35a; /* Azul más oscuro */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 3. EFECTO ACTIVE: Cuando se hace clic */
+.modern-button:active {
+  background-color: #004085; /* Azul aún más oscuro */
+  /* Pequeño movimiento hacia abajo para dar sensación de "clic" */
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 4. ESTADO DESHABILITADO */
+.modern-button:disabled {
+  background-color: #cccccc; /* Gris */
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.select-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.select-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilos para el select */
+.custom-select {
+  padding: 10px 15px;
+  border: 1px solid  #00b35a;
+  border-radius: 6px;
+  background-color: black;
+  font-size: 16px;
+  width: 250px;
+  cursor: pointer;
+  
+  /* Quita la apariencia nativa en algunos navegadores para control total del estilo */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.selection-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+
+/* 1. CLASE PRINCIPAL: El contenedor que hace el círculo y el fondo verde */
+.playerImage {
+  border-radius: 50%; 
+  width: 120px;   
+  height: 120px;  
+  display: flex; /* Para centrar la imagen */
+  align-items: center;
+  justify-content: center;
+  padding: 5px; 
+  margin: 10px auto; 
+  overflow: hidden; 
+}
+
+.playerImage img {
+  max-width: 100%;       /* Asegura que la imagen no sea más ancha que el contenedor */
+  max-height: 100%;      /* Asegura que la imagen no sea más alta que el contenedor */
+  
+  /* CAMBIO CLAVE: Usa 'contain' para que la imagen se vea completa */
+  object-fit: contain;   /* Redimensiona la imagen para que quepa completamente dentro del contenedor */
+  
+  border-radius: 50%; /* Opcional: Esto no tendrá efecto si 'contain' deja espacios */
+  /* background-color: white; */ /* Opcional: Un fondo blanco detrás de la imagen si es rectangular */
+}
+.gameItem{
+  display: flex;
+  flex-direction: row;
+  align-items: center
+;  gap: 10px;
+}
+.gameItemMain{
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: black;
+    display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+

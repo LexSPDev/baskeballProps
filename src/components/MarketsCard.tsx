@@ -1,22 +1,50 @@
 import MarketsGames from "./MarketsGames.tsx";
 
-type dataGame = { date: Date; value: number };
-type lastObject = {
-  1?: dataGame;
-  2?: dataGame;
-  3?: dataGame;
-  4?: dataGame;
-  5?: dataGame;
-};
 type OddsObject = {
   line: number;
   overOdd: number;
   underOdd: number;
-  lastAgainst: lastObject;
-  lastFive: lastObject;
-  lastAgainstStatus: lastObject;
-  lastFiveStatus: lastObject;
-  dvpValue : number
+  games: gamesObject;
+  dvp_used?: number;
+  Projection?: number;
+  Prob_Under?: number;
+  Prob_Over?: number;
+  is_good_matchup: boolean
+};
+type gamesObject = {
+  lastFive?: gameObject;
+  lastFiveStatus?: gameObject;
+  LastAgainst?: gameObject;
+  lastFiveAgainstStatus?: gameObject;
+};
+type gameObject = {
+  1?: statsObject;
+  2?: statsObject;
+  3?: statsObject;
+  4?: statsObject;
+  5?: statsObject;
+  logros?: logrosObject;
+  url?: string;
+};
+type logrosObject = {
+  alpha: logroObject;
+  beta: logroObject;
+  gama: logroObject;
+  delta: logroObject;
+  epsilon: logroObject;
+  zeta: logroObject;
+  eta: logroObject;
+};
+type logroObject = {
+  meta: number;
+  cumplido: number;
+};
+type statsObject = {
+  min: number;
+  date: Date;
+  pts?: number;
+  reb?: number;
+  ast?: number;
 };
 
 type MarketProps = {
@@ -27,32 +55,32 @@ export default function MarketsCard({ market, marketName }: MarketProps) {
   return (
     <>
       <div className="marketsCard">
-        <div className="marketsOdds">
-          <span className="marketName">{marketName}</span>
-          <span>LINE : {market.line}</span>
-          <span>DVP : {market.dvpValue}</span>
-          <div className="odds">
-          <span>{market.underOdd}</span>
-          <span>{market.overOdd}</span>
+        <div
+          className={
+            market?.is_good_matchup
+              ? "marketsOdds star-corner"
+              : "marketsOdds red"
+          }
+        >
+          <span className="">{marketName}</span>
+          <span>LINE : {market?.line}</span>
+          <span>DVP : {market?.dvp_used}</span>
+          <span>Proj : {market?.Projection}</span>
+          <span>Prob : {market?.Prob_Over}</span>
+          <div className="">
+            <span>{market?.overOdd}</span>
+            <span>{market?.underOdd}</span>
           </div>
         </div>
-        <div className="marketsGames">
-          <div>
-            <span>Last games</span>
-            <MarketsGames games={market.lastFive} line={market.line} />
-          </div>
-          <div>
-            <span>Last games status</span>
-            <MarketsGames games={market.lastFiveStatus} line={market.line} />
-          </div>
-          <div>
-            <span>H2H</span>
-            <MarketsGames games={market.lastAgainst} line={market.line} />
-          </div>
-          <div>
-            <span>H2H status</span>
-            <MarketsGames games={market.lastAgainstStatus} line={market.line} />
-          </div>
+        <div>
+          <span><a href={market.games.lastFive?.url}>Last games</a> </span>
+          <MarketsGames games={market.games.lastFive} line={market?.line} />
+          <span  ><a href={market.games.LastAgainst?.url}>H2H:</a> </span>
+          <MarketsGames
+            games={market.games.LastAgainst}
+            line={market?.line}
+          />
+
         </div>
       </div>
     </>

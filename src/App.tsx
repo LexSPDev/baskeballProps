@@ -1,80 +1,54 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
-import MarketsCard from "./components/marketsCard.tsx";
-
-type Game = { id: string; homeTeamName: string; awayTeamName: string, time: string };
-type dataGame = { date: Date; value: number };
-type lastObject = {
-  1?: dataGame;
-  2?: dataGame;
-  3?: dataGame;
-  4?: dataGame;
-  5?: dataGame;
+type Game = {
+  id: string;
+  homeTeamName: string;
+  awayTeamName: string;
+  time: string;
+  home?: Player[];
+  away?: Player[];
 };
-
-type OddsObject = {
-  line: number;
-  overOdd: number;
-  underOdd: number;
-  lastAgainst: lastObject;
-  lastFive: lastObject;
-  lastAgainstStatus: lastObject;
-  lastFiveStatus: lastObject;
-  green?: greenObject;
-  statistics?: statisticsObject;
-  streak?: streakObject;
-  dvpValue?: number;
-};
-type greenObject = {
-  lastFive?: lastObjectGreen;
-  lastAgainst?: lastObjectGreen;
-};
-type streakObject = {
-  lastFive?: number;
-  lastFiveAgainst?: number;
-};
-type lastObjectGreen = {
-  over?: number;
-  under?: number;
-  total?: number;
-};
-type MarketObject = {
-  rebounds: OddsObject;
-  assists: OddsObject;
-  points: OddsObject;
-  pointsReboundsAssists: OddsObject;
-  pointsAssistsRebounds: OddsObject;
-  pointsRebounds: OddsObject;
-  pointsAssists: OddsObject;
-  assistsRebounds: OddsObject;
-};
-
 type Player = {
-  _id: string;
-  name: string;
-  team: string;
-  opponent: string;
-  markets: MarketObject; // <-- ahora es un objeto, no un array
-  position: PositionObject;
+  games?: GamesDataObject;
+  playerName: string;
+  playerId: string;
+  playerTeam: string;
 };
-type PositionObject = {
-  name: string;
-  pos: string;
-  team: string;
-  titular: number;
+
+type GamesDataObject = {
+  lastAgainst?: GameObject;
+  lastAgainstStatus?: GameObject;
+  lastGames?: GameObject;
+  lastGamesStatus?: GameObject;
 };
-type statisticsObject = {
-  avg: number;
-  min: number;
-  mode: number;
+
+type GameObject = {
+  games?: singleGamesObject;
+};
+type singleGamesObject = {
+  1?: singleGameObject;
+  2?: singleGameObject;
+  3?: singleGameObject;
+  4?: singleGameObject;
+  5?: singleGameObject;
+};
+
+type singleGameObject = {
+  date?: Date;
+  min?: number;
+  pts?: number;
+  ast?: number;
+  reb?: number;
+  triples?: number;
+  triplesattemps?: number;
 };
 
 function App() {
   const [games, setGames] = useState<Game[]>([]);
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [playersFiltered, setPlayersFiltered] = useState<Player[]>([]);
-  const [playersSelected, setPlayersSelected] = useState<Player[]>([]);
+  const [playersHome, setPlayersHome] = useState<Player[]>([]);
+  const [playersAway, setPlayersAway] = useState<Player[]>([]);
+
   const fetchGames = async () => {
     try {
       const response = await fetch("/api/games");
@@ -84,297 +58,221 @@ function App() {
       console.error("Error fetching games:", error);
     }
   };
-
-  const fetchPlayers = async () => {
-    try {
-      const response = await fetch("/api/players");
-      const data = await response.json();
-      setPlayers(data);
-      setPlayersFiltered(data);
-      setPlayersSelected(data);
-    } catch (error) {
-      console.error("Error fetching players:", error);
-    }
-  };
-
   useEffect(() => {
     fetchGames();
-    fetchPlayers();
   }, []);
 
   const refreshData = (game: Game) => {
-    const filtered = players.filter(
-      (player) =>
-        player.team === game.homeTeamName || player.team === game.awayTeamName
-    );
-    setPlayersFiltered(filtered);
-    setPlayersSelected(filtered);
+    console.log(game);
+    setPlayersAway(game.away ?? []);
+    setPlayersHome(game.home ?? []);
   };
-  const playerSelected = (nameSelected: string) => {
-    const filtered = players.filter((p) => p.name === nameSelected);
-    setPlayersSelected(filtered);
-  };
+  const FALLBACK_IMAGE_URL =
+    "https://lexfitcode.github.io/dummieweb/nbaPlayers/general.png";
 
+  // 2. Define la función de manejo de error (colócala fuera del map pero dentro del componente)
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    const imgElement = event.currentTarget as HTMLImageElement;
+
+    // Evitar bucle infinito y cambiar solo si no es la imagen de fallback
+    if (imgElement.src !== FALLBACK_IMAGE_URL) {
+      imgElement.src = FALLBACK_IMAGE_URL;
+    }
+  };
   return (
     <>
-      <h1>Stats</h1>
+      <h2>Games</h2>
 
       {/* GAMES */}
       <div>
         {games.length === 0 ? (
           <p>Loading games...</p>
         ) : (
-          <div className="gameWrapper">
+          <div className="marketsWrapper">
             {games.map((game) => (
-              <span
-                key={game.id}
-                className="gameItem"
-                onClick={() => refreshData(game)}
-              >
-                {game.homeTeamName} vs {game.awayTeamName} - {game.time}
-              </span>
+              <div key={game.id} onClick={() => refreshData(game)}>
+                <div className="gameItemMain">
+                  <div className="gameItem">
+                    <img
+                      src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.homeTeamName}.png`}
+                      alt={`Foto de ${game.homeTeamName}`}
+                      onError={handleImageError}
+                    />
+                    <div>VS</div>
+                    <img
+                      src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.awayTeamName}.png`}
+                      alt={`Foto de ${game.homeTeamName}`}
+                      onError={handleImageError}
+                    />
+                  </div>
+                  <div> {game.time} </div>
+                </div>
+              </div>
             ))}
           </div>
         )}
       </div>
-      <div>
-        <h2>Players Stats</h2>
-        <div className="playersList">
-          {playersFiltered.map((player) => (
-            <div
-              className="playerItem"
-              key={player._id}
-              onClick={() => playerSelected(player.name)}
-            >
-              <div>
-                <span>{player.name}</span>
-                <span> - </span>
-                <span>
-                  {player.position.pos} - {player.position.titular}
-                </span>
-                <span> - </span>
-                <span>{player.team}</span>
+      <h2>Players Stats</h2>
+
+      <div className="statusWrapper">
+        <div className="playerWrapper">
+          {playersAway.map((player, pIndex) => (
+            <div key={player.playerName ?? pIndex}>
+              <img
+                src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
+                alt={`Foto de ${player.playerName}`}
+                onError={handleImageError}
+                className="playerImage"
+              />
+              <div className="gap">
+                <span className="playerName">{player.playerName}</span> 
+                <span className="playePosition">{player.shooting.position}</span>
+                <span className="playePosition">{player.advanced.playerEfficiencyRating}</span>
+                <span className="playePosition">{player.advanced.usagePercentage}</span>
               </div>
-              <div className="oddsList">
-                <div className="oddsItem">
-                  <span>Pts </span>
-                  <span>{player.markets.points.line}</span>
-                  <span
-                    className={
-                      player.markets.points.line <=
-                      (player?.markets?.points?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.points.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.points.line <=
-                      (player?.markets?.points?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.points.dvpValue}
-                  </span>
+              
+              <div></div>
+              <div className="dvpWrapper">
+                <span>DVP</span>
+                <span className={player.dvp.ptsGoodMatchup ? "goodMatchup": "nonMatchup"}>PTS: {player.dvp.pts}</span>
+                <span className={player.dvp.astGoodMatchup ? "goodMatchup": "nonMatchup"}>AST: {player.dvp.ast}</span>
+                <span className={player.dvp.rebGoodMatchup ? "goodMatchup": "nonMatchup"}>REB: {player.dvp.reb}</span>
+              </div>
+              <div className="games">
+                <div>
+                  <div className="gameWrapper">
+                    <span>DATE</span>
+                    <span>MIN</span>
+                    <span>PTS</span>
+                    <span>AST</span>
+                    <span>REB</span>
+                  </div>
+                  {Object.values(player.games?.lastGames?.games ?? {}).map(
+                    (game, gIndex) => (
+                      <div key={gIndex} className="gameWrapper">
+                        <span>{game?.date?.toString() ?? "-"}</span>
+                        <span>{game?.min ?? "-"}</span>
+                        <span>{game?.pts ?? "-"}</span>
+                        <span>{game?.ast ?? "-"}</span>
+                        <span>{game?.reb ?? "-"}</span>
+                      </div>
+                    )
+                  )}
                 </div>
-                <div className="oddsItem">
-                  <span>Reb </span>
-                  <span>{player.markets.rebounds.line}</span>
-                  <span
-                    className={
-                      player.markets.rebounds.line <=
-                      (player?.markets?.rebounds?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.rebounds.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.rebounds.line <=
-                      (player?.markets?.rebounds?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.rebounds.dvpValue}
-                  </span>
-                </div>
-                <div className="oddsItem">
-                  <span>Ast</span>
-                  <span>{player.markets.assists.line}</span>
-                  <span
-                    className={
-                      player.markets.assists.line <=
-                      (player?.markets?.assists?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? " green"
-                        : " red"
-                    }
-                  >
-                    {player.markets.assists.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.assists.line <=
-                      (player?.markets?.assists?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.assists.dvpValue}
-                  </span>
-                </div>
-                <div className="oddsItem">
-                  <span>PRA </span>
-                  <span>{player.markets.pointsAssistsRebounds.line}</span>
-                  <span
-                    className={
-                      player.markets.pointsAssistsRebounds.line <=
-                      (player?.markets?.pointsAssistsRebounds?.statistics
-                        ?.avg ?? Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.pointsAssistsRebounds.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.pointsAssistsRebounds.line <=
-                      (player?.markets?.pointsAssistsRebounds?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : " red"
-                    }
-                  >
-                    {player.markets.pointsAssistsRebounds.dvpValue}
-                  </span>
-                </div>
-                <div className="oddsItem">
-                  <span>PR </span>
-                  <span>{player.markets.pointsRebounds.line}</span>
-                  <span
-                    className={
-                      player.markets.pointsRebounds.line <=
-                      (player?.markets?.pointsRebounds?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.pointsRebounds.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.pointsRebounds.line <=
-                      (player?.markets?.pointsRebounds?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.pointsRebounds.dvpValue}
-                  </span>
-                </div>
-                <div className="oddsItem">
-                  <span>PA </span>
-                  <span>{player.markets.pointsAssists.line}</span>
-                  <span
-                    className={
-                      player.markets.pointsAssists.line <=
-                      (player.markets.pointsAssists?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? " green"
-                        : " red"
-                    }
-                  >
-                    {player.markets.pointsAssists.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.pointsAssists.line <=
-                      (player.markets.pointsAssists?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? " green"
-                        : " red"
-                    }
-                  >
-                    {player.markets.pointsAssists.dvpValue}
-                  </span>
-                </div>
-                <div className="oddsItem">
-                  <span>AR </span>
-                  <span> {player.markets.assistsRebounds.line}</span>
-                  <span
-                    className={
-                      player.markets.assistsRebounds.line <=
-                      (player.markets.assistsRebounds?.statistics?.avg ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.assistsRebounds.statistics?.avg}
-                  </span>
-                  <span
-                    className={
-                      player.markets.assistsRebounds.line <=
-                      (player.markets.assistsRebounds?.dvpValue ??
-                        Number.NEGATIVE_INFINITY)
-                        ? "green"
-                        : "red"
-                    }
-                  >
-                    {player.markets.assistsRebounds.dvpValue}
-                  </span>
+                <div>
+                  <div className="gameWrapper">
+                    <span>DATE</span>
+                    <span>MIN</span>
+                    <span>PTS</span>
+                    <span>AST</span>
+                    <span>REB</span>
+                  </div>
+                  {Object.values(player.games?.lastAgainst?.games ?? {})
+                    .length > 0 ? (
+                    // Caso: Hay juegos para mostrar
+
+                    Object.values(player.games?.lastAgainst?.games ?? {}).map(
+                      (game, gIndex) => (
+                        <>
+                          <div key={gIndex} className="gameWrapper">
+                            <span>{game?.date?.toString() ?? "-"}</span>
+                            <span>{game?.min ?? "-"}</span>
+                            <span>{game?.pts ?? "-"}</span>
+                            <span>{game?.ast ?? "-"}</span>
+                            <span>{game?.reb ?? "-"}</span>
+                          </div>
+                        </>
+                      )
+                    )
+                  ) : (
+                    // Caso: There's no games to show (el "else")
+                    <div className="noGames">There's no games to show</div>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
+        <div className="playerWrapper">
+          {playersHome.map((player, pIndex) => (
+            <div key={player.playerName ?? pIndex}>
+              <img
+                src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
+                alt={`Foto de ${player.playerName}`}
+                onError={handleImageError}
+                className="playerImage"
+              />
+              <div className="gap">
+                <span className="playerName">{player.playerName}</span> 
+                <span className="playePosition">{player.shooting.position}</span>
+                <span className="playePosition">{player.advanced.playerEfficiencyRating}</span>
+                <span className="playePosition">{player.advanced.usagePercentage}</span>
+              </div>
+              
+              <div></div>
+              <div className="dvpWrapper">
+                <span>DVP</span>
+                <span className={player.dvp.pts.GoodMatchup ? "goodMatchup": "nonMatchup"}>PTS: {player.dvp.pts}</span>
+                <span className={player.dvp.ast.GoodMatchup ? "goodMatchup": "nonMatchup"}>AST: {player.dvp.ast}</span>
+                <span className={player.dvp.reb.GoodMatchup ? "goodMatchup": "nonMatchup"}>REB: {player.dvp.reb}</span>
+              </div>
+              <div className="games">
+                <div>
+                  <div className="gameWrapper">
+                    <span>DATE</span>
+                    <span>MIN</span>
+                    <span>PTS</span>
+                    <span>AST</span>
+                    <span>REB</span>
+                  </div>
+                  {Object.values(player.games?.lastGames?.games ?? {}).map(
+                    (game, gIndex) => (
+                      <div key={gIndex} className="gameWrapper">
+                        <span>{game?.date?.toString() ?? "-"}</span>
+                        <span>{game?.min ?? "-"}</span>
+                        <span>{game?.pts ?? "-"}</span>
+                        <span>{game?.ast ?? "-"}</span>
+                        <span>{game?.reb ?? "-"}</span>
+                      </div>
+                    )
+                  )}
+                </div>
+                <div>
+                  <div className="gameWrapper">
+                    <span>DATE</span>
+                    <span>MIN</span>
+                    <span>PTS</span>
+                    <span>AST</span>
+                    <span>REB</span>
+                  </div>
+                  {Object.values(player.games?.lastAgainst?.games ?? {})
+                    .length > 0 ? (
+                    // Caso: Hay juegos para mostrar
 
-        {playersSelected.map((player) => (
-          <div key={player._id}>
-            <h3>{player.name}</h3>
-            <div className="marketsWrapper">
-              <MarketsCard market={player.markets.points} marketName="Points" />
-              <MarketsCard
-                market={player.markets.rebounds}
-                marketName="Rebounds"
-              />
-              <MarketsCard
-                market={player.markets.assists}
-                marketName="Assists"
-              />
-              <MarketsCard
-                market={player.markets.pointsAssists}
-                marketName="Points & Asissts"
-              />
-              <MarketsCard
-                market={player.markets.pointsRebounds}
-                marketName="Points & Rebounds"
-              />
-              <MarketsCard
-                market={player.markets.assistsRebounds}
-                marketName="Assists & Rebounds"
-              />
-              <MarketsCard
-                market={player.markets.pointsAssistsRebounds}
-                marketName="Points, Assists & Rebounds"
-              />
+                    Object.values(player.games?.lastAgainst?.games ?? {}).map(
+                      (game, gIndex) => (
+                        <>
+                          <div key={gIndex} className="gameWrapper">
+                            <span>{game?.date?.toString() ?? "-"}</span>
+                            <span>{game?.min ?? "-"}</span>
+                            <span>{game?.pts ?? "-"}</span>
+                            <span>{game?.ast ?? "-"}</span>
+                            <span>{game?.reb ?? "-"}</span>
+                          </div>
+                        </>
+                      )
+                    )
+                  ) : (
+                    // Caso: There's no games to show (el "else")
+                    <div className="noGames">There's no games to show</div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
