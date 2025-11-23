@@ -54,7 +54,7 @@ function App() {
 
   const fetchGames = async () => {
     try {
-      const response = await fetch("/api/games");
+      const response = await fetch("https://basketballpropsbackend-production.up.railway.app/games");
       const data = await response.json();
       setGames(data);
     } catch (error) {
@@ -186,11 +186,11 @@ function App() {
                     <span>Pace</span>
                     <span
                       className={
-                        player.pace?.team?.lastThree > 100 ? "goodMatchup" : ""
+                        player.pace?.team.lastThree > 100 ? "goodMatchup" : ""
                       }
                     >
                       {" "}
-                      {player.pace?.team?.lastThree}
+                      {player.pace?.team.lastThree}
                     </span>
 
                     <span
@@ -429,11 +429,11 @@ function App() {
                     <span>Pace</span>
                     <span
                       className={
-                        player.pace?.team?.lastThree > 100 ? "goodMatchup" : ""
+                        player.pace?.team.lastThree > 100 ? "goodMatchup" : ""
                       }
                     >
                       {" "}
-                      {player.pace?.team?.lastThree}
+                      {player.pace?.team.lastThree}
                     </span>
 
                     <span

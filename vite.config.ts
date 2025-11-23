@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: 'https://lexspdev.github.io/baskeballProps/', // Link page
+  
   server: {
     proxy: {
       '/api': 'http://localhost:3000'
