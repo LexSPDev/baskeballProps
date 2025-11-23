@@ -10,6 +10,9 @@ type Game = {
   away?: Player[];
 };
 type Player = {
+  pace: any;
+  dvp: any;
+  advanced: any;
   games?: GamesDataObject;
   playerName: string;
   playerId: string;
@@ -118,27 +121,192 @@ function App() {
 
       <div className="statusWrapper">
         <div className="playerWrapper">
-          {playersAway.map((player, pIndex) => (
-            <div key={player.playerName ?? pIndex}>
-              <img
-                src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
-                alt={`Foto de ${player.playerName}`}
-                onError={handleImageError}
-                className="playerImage"
-              />
-              <div className="gap">
-                <span className="playerName">{player.playerName}</span> 
-                <span className="playePosition">{player.shooting.position}</span>
-                <span className="playePosition">{player.advanced.playerEfficiencyRating}</span>
-                <span className="playePosition">{player.advanced.usagePercentage}</span>
-              </div>
-              
-              <div></div>
-              <div className="dvpWrapper">
-                <span>DVP</span>
-                <span className={player.dvp.ptsGoodMatchup ? "goodMatchup": "nonMatchup"}>PTS: {player.dvp.pts}</span>
-                <span className={player.dvp.astGoodMatchup ? "goodMatchup": "nonMatchup"}>AST: {player.dvp.ast}</span>
-                <span className={player.dvp.rebGoodMatchup ? "goodMatchup": "nonMatchup"}>REB: {player.dvp.reb}</span>
+          {playersHome.map((player, pIndex) => (
+            <div key={player.playerName ?? pIndex} className="cardHeight">
+              <div className="dataWrapper">
+                <div className="nameWrapper">
+                  <div className="playerPosition">
+                                                         <span className="playerPosition">
+                        {player.advanced.position}
+                      </span>
+                  <img
+                    src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
+                    alt={`Foto de ${player.playerName}`}
+                    onError={handleImageError}
+                    className="playerImage"
+                  />
+
+                  </div>
+                  <div className="gap">
+                    <div>
+                      <span className="playerName">{player.playerName}</span>
+   
+                    </div>
+                    <div className="generalWrapper">
+                      <span className="playePosition">
+                        PER : {player.advanced.playerEfficiencyRating}
+                      </span>
+                      <span
+                        className={
+                          player.advanced?.usagePercentage > 24
+                            ? "playePosition goodMatchup"
+                            : ""
+                        }
+                      >
+                        USG : {player.advanced.usagePercentage}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relevantsWrapper">
+                  <div className="dvpWrapper">
+                    <span>DVP</span>
+                    <span
+                      className={
+                        player.dvp?.ptsGoodMatchup ? "goodMatchup" : ""
+                      }
+                    >
+                      PTS: {player.dvp?.pts}
+                    </span>
+                    <span
+                      className={
+                        player.dvp?.astGoodMatchup ? "goodMatchup" : ""
+                      }
+                    >
+                      AST: {player.dvp?.ast}
+                    </span>
+                    <span
+                      className={player.dvp?.rebGoodMatchu ? "goodMatchup" : ""}
+                    >
+                      REB: {player.dvp?.reb}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Pace</span>
+                    <span
+                      className={
+                        player.pace?.team?.lastThree > 100 ? "goodMatchup" : ""
+                      }
+                    >
+                      {" "}
+                      {player.pace?.team?.lastThree}
+                    </span>
+
+                    <span
+                      className={
+                        player.pace?.against?.lastThree > 100
+                          ? "goodMatchup"
+                          : ""
+                      }
+                    >
+                      {" "}
+                      vs {player.pace?.against?.lastThree}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Points relevants</span>
+                    <span
+                      className={
+                        player.advanced?.trueShootingPercentage > 0.5
+                          ? "goodMatchup"
+                          : ""
+                      }
+                    >
+                      TS {player.advanced?.trueShootingPercentage}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Rebounds relevants</span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.defensiveReboundPercentage > 30
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.defensiveReboundPercentage > 25
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.defensiveReboundPercentage > 8
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.defensiveReboundPercentage > 10
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.defensiveReboundPercentage > 18
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      D-REB {player.advanced?.defensiveReboundPercentage}
+                    </span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.offensiveReboundPercentage > 12
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.offensiveReboundPercentage > 10
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.offensiveReboundPercentage > 2
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.offensiveReboundPercentage > 3
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.offensiveReboundPercentage > 6
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      O-REB {player.advanced?.offensiveReboundPercentage}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Assists relevants</span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.assistPercentage > 15
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.assistPercentage > 18
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.assistPercentage > 35
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.assistPercentage > 25
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.assistPercentage > 20
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      A-Per {player.advanced?.assistPercentage}
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="games">
                 <div>
@@ -196,27 +364,192 @@ function App() {
           ))}
         </div>
         <div className="playerWrapper">
-          {playersHome.map((player, pIndex) => (
-            <div key={player.playerName ?? pIndex}>
-              <img
-                src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
-                alt={`Foto de ${player.playerName}`}
-                onError={handleImageError}
-                className="playerImage"
-              />
-              <div className="gap">
-                <span className="playerName">{player.playerName}</span> 
-                <span className="playePosition">{player.shooting.position}</span>
-                <span className="playePosition">{player.advanced.playerEfficiencyRating}</span>
-                <span className="playePosition">{player.advanced.usagePercentage}</span>
-              </div>
-              
-              <div></div>
-              <div className="dvpWrapper">
-                <span>DVP</span>
-                <span className={player.dvp.pts.GoodMatchup ? "goodMatchup": "nonMatchup"}>PTS: {player.dvp.pts}</span>
-                <span className={player.dvp.ast.GoodMatchup ? "goodMatchup": "nonMatchup"}>AST: {player.dvp.ast}</span>
-                <span className={player.dvp.reb.GoodMatchup ? "goodMatchup": "nonMatchup"}>REB: {player.dvp.reb}</span>
+          {playersAway.map((player, pIndex) => (
+            <div key={player.playerName ?? pIndex} className="cardHeight">
+              <div className="dataWrapper">
+                <div className="nameWrapper">
+                  <div className="playerPosition">
+                                                         <span className="playerPosition">
+                        {player.advanced.position}
+                      </span>
+                  <img
+                    src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
+                    alt={`Foto de ${player.playerName}`}
+                    onError={handleImageError}
+                    className="playerImage"
+                  />
+
+                  </div>
+                  <div className="gap">
+                    <div>
+                      <span className="playerName">{player.playerName}</span>
+   
+                    </div>
+                    <div className="generalWrapper">
+                      <span className="playePosition">
+                        PER : {player.advanced.playerEfficiencyRating}
+                      </span>
+                      <span
+                        className={
+                          player.advanced?.usagePercentage > 24
+                            ? "playePosition goodMatchup"
+                            : ""
+                        }
+                      >
+                        USG : {player.advanced.usagePercentage}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relevantsWrapper">
+                  <div className="dvpWrapper">
+                    <span>DVP</span>
+                    <span
+                      className={
+                        player.dvp?.ptsGoodMatchup ? "goodMatchup" : ""
+                      }
+                    >
+                      PTS: {player.dvp?.pts}
+                    </span>
+                    <span
+                      className={
+                        player.dvp?.astGoodMatchup ? "goodMatchup" : ""
+                      }
+                    >
+                      AST: {player.dvp?.ast}
+                    </span>
+                    <span
+                      className={player.dvp?.rebGoodMatchu ? "goodMatchup" : ""}
+                    >
+                      REB: {player.dvp?.reb}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Pace</span>
+                    <span
+                      className={
+                        player.pace?.team?.lastThree > 100 ? "goodMatchup" : ""
+                      }
+                    >
+                      {" "}
+                      {player.pace?.team?.lastThree}
+                    </span>
+
+                    <span
+                      className={
+                        player.pace?.against?.lastThree > 100
+                          ? "goodMatchup"
+                          : ""
+                      }
+                    >
+                      {" "}
+                      vs {player.pace?.against?.lastThree}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Points relevants</span>
+                    <span
+                      className={
+                        player.advanced?.trueShootingPercentage > 0.5
+                          ? "goodMatchup"
+                          : ""
+                      }
+                    >
+                      TS {player.advanced?.trueShootingPercentage}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Rebounds relevants</span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.defensiveReboundPercentage > 30
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.defensiveReboundPercentage > 25
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.defensiveReboundPercentage > 8
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.defensiveReboundPercentage > 10
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.defensiveReboundPercentage > 18
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      D-REB {player.advanced?.defensiveReboundPercentage}
+                    </span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.offensiveReboundPercentage > 12
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.offensiveReboundPercentage > 10
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.offensiveReboundPercentage > 2
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.offensiveReboundPercentage > 3
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.offensiveReboundPercentage > 6
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      O-REB {player.advanced?.offensiveReboundPercentage}
+                    </span>
+                  </div>
+                  <div className="dvpWrapper">
+                    <span>Assists relevants</span>
+                    <span
+                      className={
+                        // 1. Centro (C) y su umbral (ej. > 12)
+                        player.advanced?.position === "C" &&
+                        player.advanced?.assistPercentage > 15
+                          ? "goodMatchup"
+                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                          player.advanced?.position === "PF" &&
+                            player.advanced?.assistPercentage > 18
+                          ? "goodMatchup"
+                          : // 3. Base (PG) y su umbral (ej. > 8)
+                          player.advanced?.position === "PG" &&
+                            player.advanced?.assistPercentage > 35
+                          ? "goodMatchup"
+                          : // 4. Escolta (SG) y su umbral (ej. > 7)
+                          player.advanced?.position === "SG" &&
+                            player.advanced?.assistPercentage > 25
+                          ? "goodMatchup"
+                          : // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced?.position === "SF" &&
+                            player.advanced?.assistPercentage > 20
+                          ? "goodMatchup"
+                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                      }
+                    >
+                      A-Per {player.advanced?.assistPercentage}
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="games">
                 <div>
