@@ -93,28 +93,46 @@ function App() {
         {games.length === 0 ? (
           <p>Loading games...</p>
         ) : (
-          <div className="marketsWrapper">
-            {games.map((game) => (
-              <div key={game.id} onClick={() => refreshData(game)}>
-                <div className="gameItemMain">
-                  <div className="gameItem">
-                    <img
-                      src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.homeTeamName}.png`}
-                      alt={`Foto de ${game.homeTeamName}`}
-                      onError={handleImageError}
-                    />
-                    <div>VS</div>
-                    <img
-                      src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.awayTeamName}.png`}
-                      alt={`Foto de ${game.homeTeamName}`}
-                      onError={handleImageError}
-                    />
-                  </div>
-                  <div> {game.time} </div>
-                </div>
-              </div>
-            ))}
+          <div className="carrusel-react"> 
+  
+  {/* Contenedor interno de las tarjetas (donde se aplica el display: flex) */}
+  <div className="carrusel-inner-react">
+    {games.map((game) => (
+      
+      // Cada ítem individual es una tarjeta con la clase de snap-align
+      <div 
+        key={game.id} 
+        onClick={() => refreshData(game)} 
+        className="tarjeta-partido-react" // 👈 CLASE CRUCIAL para el snap
+      >
+        <div>
+          <div className="gameItem">
+            
+            {/* Logo del Equipo Local */}
+            <img
+              src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.homeTeamName}.png`}
+              alt={`Logo de ${game.homeTeamName}`}
+              onError={handleImageError}
+              className="team-logo" // Clase opcional para estilos de imagen
+            />
+            
+            <div className="vs-text">VS</div>
+            
+            {/* Logo del Equipo Visitante */}
+            <img
+              src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.awayTeamName}.png`}
+              alt={`Logo de ${game.awayTeamName}`}
+              onError={handleImageError}
+              className="team-logo" // Clase opcional para estilos de imagen
+            />
           </div>
+          
+          <div className="game-time-display"> {game.time} </div> 
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
         )}
       </div>
       <h2>Players Stats</h2>
