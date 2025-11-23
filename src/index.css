@@ -176,6 +176,8 @@ div {
 .cardHeight{
   height: 560px;
 }
+
+
 /* 1. Contenedor principal: Habilita el desplazamiento y el 'scroll-snap' */
 .carrusel-react {
   width: 100%;
