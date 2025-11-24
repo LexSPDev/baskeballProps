@@ -20,7 +20,7 @@ type singleGamesObject = {
   [key: string]: singleGameObject;
 };
 type GameObject = {
-  games?: singleGamesObject;
+  games: singleGamesObject;
 };
 type GamesDataObject = {
   lastAgainst?: GameObject;
@@ -301,7 +301,7 @@ function App() {
       <DetalleModal
         isOpen={isModalOpen}
         onClose={closePlayerModal}
-        playerGames={modalData.games}
+        playerGames={modalData.games ?? null}
         playerName={modalData.name}
       />
     </>

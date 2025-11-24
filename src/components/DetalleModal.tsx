@@ -1,6 +1,28 @@
 import './DetalleModal.css'; // Asegúrate de crear este archivo CSS para el modal
+interface Game {
+  date?: string;
+  min?: number;
+  pts?: number;
+  ast?: number;
+  reb?: number;
+}
 
-const DetalleModal = ({ isOpen, onClose, playerGames, playerName }) => {
+interface PlayerGames {
+  lastGames?: {
+    games: { [key: string]: Game };
+  };
+  lastAgainst?: {
+    games: { [key: string]: Game };
+  };
+}
+
+interface DetalleModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  playerGames: PlayerGames | null;
+  playerName: string;
+}
+const DetalleModal = ({ isOpen, onClose, playerGames, playerName }: DetalleModalProps) => {
   if (!isOpen || !playerGames) return null;
 
   return (
