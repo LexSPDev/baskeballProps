@@ -1,0 +1,99 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que esté por encima de todo */
+}
+
+.modal-content {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90vh; /* Limita la altura para evitar desbordamiento */
+  overflow-y: auto; /* Permite scroll dentro del modal si es necesario */
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.game-section {
+    margin-bottom: 20px;
+}
+
+.gameWrapper {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 0.5fr; /* 5 columnas */
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #555;
+  text-align: center;
+}
+
+.gameWrapper.header {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+/* ================================================= */
+/* MODAL.CSS (La Solución para la Visibilidad)       */
+/* ================================================= */
+
+/* Fondo del Modal: Ocupa toda la pantalla y es fijo */
+.modal-backdrop {
+  position: **fixed**;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* CLAVE: Valor muy alto para que esté encima de todo */
+  z-index: **9999**; 
+}
+
+/* Contenido del Modal: La caja blanca/oscura */
+.modal-content {
+  background-color: #333; /* Color de fondo */
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  
+  /* Límites de tamaño, especialmente importante en móvil */
+  max-width: 95%; 
+  max-height: 90vh; 
+  
+  overflow-y: auto; 
+  position: relative;
+  
+  /* CRÍTICO: Detener la propagación del clic para que no se cierre al hacer clic dentro */
+  cursor: default; 
+}
+
+/* Estilos para el contenido interno (gameWrapper) */
+.gameWrapper {
+  display: grid;
+  grid-template-columns: 1fr repeat(4, 0.5fr); 
+  gap: 10px;
+  /* ... otros estilos ... */
+}

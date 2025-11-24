@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --repo https://github.com/LexSPDev/baskeballProps.git"
+    "deploy": "npm run build && gh-pages -d dist"
 
   },
   "dependencies": {
