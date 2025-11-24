@@ -1,202 +1,363 @@
-.marketsWrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-}
+/* ================================================= */
+/* CARRUSEL DE PARTIDOS TÁCTIL (Scroll-Snap)         */
+/* ================================================= */
 
-.star-corner {
-  /* Establece la posición relativa para que los pseudo-elementos se posicionen con respecto a este contenedor */
-  position: relative;
-  /* (Opcional) Añade padding para que la estrella no oculte el contenido del elemento */
-  padding-top: 20px;
-}
-.star-corner-none{
-  padding-top: 20px;
-}
-.star-corner::after {
-  /* Inserta el carácter de estrella (puedes usar el unicode \2605 para una estrella sólida) */
-  content: "\2605";
-
-  /* Posicionamiento absoluto para colocarlo en la esquina */
-  position: absolute;
-  top: 0; /* Arriba */
-  right: 0; /* Derecha */
-
-  /* Color verde oscuro */
-  color: #a8f6a8; /* DarkGreen */
-
-  /* Ajusta el tamaño de la fuente para que la estrella sea visible */
-  font-size: 2em;
-
-  /* (Opcional) Asegura que la estrella siempre esté visible */
-  z-index: 10;
-}
-
-a {
-  text-decoration: none;
-}
-
-.statusWrapper{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+/* Contenedor principal: Habilita el desplazamiento y el 'scroll-snap' */
+.carrusel-react {
   width: 100%;
+  max-width: 100vw;
+  margin: 20px 0;
+  overflow-x: scroll; /* Permite el desplazamiento horizontal */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; /* Mejora el rendimiento en iOS */
+  scroll-snap-type: x mandatory; /* Fuerza que el scroll se detenga en las tarjetas */
+  
+  /* Ocultar la barra de desplazamiento */
+  scrollbar-width: none; 
+  padding: 0 10px; /* Pequeño padding para que se vea el borde de la siguiente tarjeta */
 }
 
-.gameWrapper{
-  display: grid;
-  /* Define 4 columnas: 
-     - La 1ra columna (primary-data) ocupa 2 partes (2fr).
-     - Las otras 3 columnas (secondary-data) ocupan 1 parte cada una (1fr). 
-     Esto hace que el primer elemento sea el doble de grande que los otros. */
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr ; 
-  gap: 10px; /* Espacio entre los elementos */
-  width: 100%;
-  max-width: 600px; /* Limita el tamaño total del contenedor */
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 6px;
-  font-family: Arial, sans-serif;
+/* Ocultar la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+.carrusel-react::-webkit-scrollbar {
+  display: none;
 }
 
-.games{
+/* Contenedor interno: Coloca las tarjetas en fila */
+.carrusel-inner-react {
   display: flex; 
-  flex-direction: row;
-  justify-content: space-around;
-  gap: 10px;
 }
 
-.playerWrapper{
-  width: 50%;
-}
-
-/* 1. CLASE PRINCIPAL: Apariencia base del botón */
-.modern-button {
-  /* Diseño */
-  display: inline-flex; /* Asegura que el contenido esté centrado y respete el padding */
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px; /* Bordes redondeados */
-  cursor: pointer;
+/* Tarjeta individual: Define su tamaño y punto de anclaje */
+.tarjeta-partido-react {
+  /* Ancho para móvil: Una tarjeta casi completa, dejando un espacio para el swipe */
+  flex: 0 0 calc(100vw - 60px); 
+  min-width: 280px; 
   
-  /* Color y Tipografía */
-  background-color: #00b35a; /* Azul primario */
+  margin: 10px 10px;
+  scroll-snap-align: start; /* El punto de anclaje para el scroll */
+  
+  /* Estilos de diseño */
+  background-color: #333;
   color: white;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none; /* Útil para enlaces (<a>) */
-  margin-bottom: 10px;
+  border-radius: 12px;
+  padding: 20px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   
-  /* Transición (para efectos suaves) */
-  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-  
-  /* Sombra sutil */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* 2. EFECTO HOVER: Cuando el ratón está encima */
-.modern-button:hover {
-  background-color: #00b35a; /* Azul más oscuro */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* 3. EFECTO ACTIVE: Cuando se hace clic */
-.modern-button:active {
-  background-color: #004085; /* Azul aún más oscuro */
-  /* Pequeño movimiento hacia abajo para dar sensación de "clic" */
-  transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* 4. ESTADO DESHABILITADO */
-.modern-button:disabled {
-  background-color: #cccccc; /* Gris */
-  color: #666666;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-.select-container {
-  margin: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.select-container label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Estilos para el select */
-.custom-select {
-  padding: 10px 15px;
-  border: 1px solid  #00b35a;
-  border-radius: 6px;
-  background-color: black;
-  font-size: 16px;
-  width: 250px;
-  cursor: pointer;
-  
-  /* Quita la apariencia nativa en algunos navegadores para control total del estilo */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.custom-select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
-
-.selection-info {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #555;
-}
-
-
-/* 1. CLASE PRINCIPAL: El contenedor que hace el círculo y el fondo verde */
-.playerImage {
-  border-radius: 50%; 
-  width: 120px;   
-  height: 120px;  
-  display: flex; /* Para centrar la imagen */
+  /* Layout interno de la tarjeta */
+  display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  padding: 5px; 
-  margin: 10px auto; 
+  text-align: center;
+  position: relative;
+}
+
+.equipo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+.vs-text {
+    font-weight: bolder;
+    font-size: 1.5rem;
+    color: #FFD700;
+}
+.hora-partido {
+    position: absolute;
+    bottom: 5px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+/* ================================================= */
+/* LISTAS DE ESTADÍSTICAS (Grid + Responsivo)        */
+/* ================================================= */
+
+/* 1. COMPORTAMIENTO WEB (Escritorio/Tablet) */
+
+.container-listas {
+  /* Contenedor Flexbox para poner las dos listas una al lado de la otra */
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.lista-estadisticas {
+  /* Cada lista toma la mitad del ancho (50%) */
+  flex: 1 1 calc(50% - 10px); 
+  
+  /* Permite el scroll horizontal si el contenido del Grid es más ancho */
+  overflow-x: auto; 
+  overflow-y: hidden;
+  
+  /* Eliminamos padding horizontal para maximizar el área visible para el scroll */
+  padding: 0; 
+}
+
+/* 2. ESTILO GRID (Aplicado a encabezados y filas de datos) */
+
+/* Clase GridEstadisticas (reemplaza tu antigua clase 'list') */
+.GridEstadisticas {
+  display: grid;
+  gap: 10px;
+  
+  /* CLAVE: 150px fijo para 'NAME', y 10 columnas más uniformes (1fr). */
+  grid-template-columns: 150px repeat(10, 1fr);
+  
+  /* Mínimo de ancho para forzar el scroll horizontal */
+  min-width: 1000px; 
+  
+  /* Centrado Interno */
+  place-items: center; 
+  
+  /* Estilos de presentación */
+  padding: 10px 0;
+  font-weight: bold;
+  border-bottom: 1px solid #444; 
+}
+
+/* Alineación específica para la columna NAME (primera columna) */
+.GridEstadisticas > div:first-child {
+  text-align: left; 
+  padding-left: 15px; /* Pequeño margen para separar el nombre del borde */
+}
+
+/* 3. MEDIA QUERY (Móvil) */
+
+@media (max-width: 730px) {
+  
+  .container-listas {
+    /* Las listas se apilan (una arriba, la otra abajo) */
+    flex-direction: column; 
+    gap: 15px;
+  }
+
+  .lista-estadisticas {
+    /* Cada lista toma el ancho COMPLETO del móvil */
+    width: 100%;
+    flex: none; 
+    
+    /* Asegura que el scroll horizontal esté alineado al inicio */
+    scroll-snap-align: start; 
+    scroll-padding-left: 0; 
+    
+    /* El overflow-x: auto sigue funcionando para hacer el scroll */
+  }
+}
+.GridEstadisticas > div:first-child {
+  /* Anula el 'place-items: center' horizontalmente SÓLO para este ítem */
+  justify-self: start; 
+  
+  /* Asegura que el texto esté alineado a la izquierda */
+  text-align: left; 
+  
+  /* Mantiene un pequeño margen a la izquierda del borde de la lista */
+  padding-left: 15px; 
+}
+
+/* ================================================= */
+/* 2. CARRUSEL DE PARTIDOS TÁCTIL (Web y Móvil)      */
+/* ================================================= */
+
+/* Estilos Web/Escritorio (Por defecto) */
+.carrusel-react {
+  width: 100%;
+  padding: 0 10px; 
+  /* En escritorio, no queremos scroll horizontal, pero si queremos el flex */
+  overflow-x: hidden; 
+  overflow-y: hidden;
+  margin: 20px 0;
+  
+  /* Desactivamos el scroll-snap en escritorio */
+  scroll-snap-type: none; 
+}
+
+.carrusel-inner-react {
+  display: flex; 
+  justify-content: space-between; /* Distribuye los elementos uniformemente */
+}
+
+.tarjeta-partido-react {
+  /* CLAVE WEB: Permite que el ancho de la tarjeta se calcule automáticamente.
+     Flex: 1 1 0 asegura que el espacio se divida de manera uniforme entre todas las tarjetas. */
+  flex: 1 1 0; 
+  min-width: 150px; /* Ancho mínimo para que no se compriman demasiado */
+  
+  margin: 10px 5px; /* Menos margen en web para aprovechar el espacio */
+  
+  /* Resto de estilos de diseño */
+  background-color: #333;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+/* --- MEDIA QUERY para Móviles (Ancho <= 600px) --- */
+@media (max-width: 730px) {
+    .carrusel-react {
+      /* Habilita el scroll horizontal para móvil */
+      overflow-x: scroll; 
+      -webkit-overflow-scrolling: touch; 
+      scroll-snap-type: x mandatory; 
+      scrollbar-width: none; 
+      padding: 0 10px;
+    }
+    
+    .carrusel-inner-react {
+        /* Desactiva el 'justify-content' para que el scroll funcione */
+        justify-content: start; 
+    }
+
+    .tarjeta-partido-react {
+        /* CLAVE MÓVIL: Muestra solo una tarjeta a la vez (con margen) y fuerza el snap */
+        flex: 0 0 calc(100vw - 60px); 
+        min-width: 280px; 
+        margin: 10px 10px;
+        scroll-snap-align: start; /* Ancla la tarjeta al inicio del scroll */
+    }
+}
+.gameItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 10px;
+}
+
+/* ================================================= */
+/* AJUSTES PARA QUE LOS LOGOS NO SE DESBORDEN        */
+/* ================================================= */
+
+.tarjeta-partido-react {
+  /* ... (otras propiedades como flex, min-width, margin, etc.) ... */
+  
+  /* Asegura que la tarjeta use FLEX para distribuir el espacio */
+  display: flex;
+  
+  /* Permite que los elementos internos se envuelvan si es necesario (opcional) */
+  flex-wrap: nowrap; 
+  
+  /* Alineación interna */
+  justify-content: space-around;
+  align-items: center;
+
+  /* IMPORTANTE: Usamos overflow: hidden para cortar cualquier contenido que se salga,
+     aunque el ajuste de tamaño debería prevenir esto. */
   overflow: hidden; 
 }
 
-.playerImage img {
-  max-width: 100%;       /* Asegura que la imagen no sea más ancha que el contenedor */
-  max-height: 100%;      /* Asegura que la imagen no sea más alta que el contenedor */
-  
-  /* CAMBIO CLAVE: Usa 'contain' para que la imagen se vea completa */
-  object-fit: contain;   /* Redimensiona la imagen para que quepa completamente dentro del contenedor */
-  
-  border-radius: 50%; /* Opcional: Esto no tendrá efecto si 'contain' deja espacios */
-  /* background-color: white; */ /* Opcional: Un fondo blanco detrás de la imagen si es rectangular */
-}
-.gameItem{
-  display: flex;
-  flex-direction: row;
-  align-items: center
-;  gap: 10px;
-}
-.gameItemMain{
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: black;
+/* Contenedor de la línea de juego (Logos y VS) */
+.gameItem {
     display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 1; /* Permite que este contenedor se encoja si es necesario */
 }
 
+.team-logo {
+    /* CLAVE 1: Limita el tamaño de los logos en todos los modos */
+    width: 35px; 
+    height: 35px;
+    
+    /* Asegura que la imagen se escale para encajar en el tamaño de 35x35px */
+    object-fit: contain;
+    
+    /* Asegura que la imagen pueda reducir su tamaño sin forzar el desborde */
+    flex-shrink: 1; 
+}
+
+/* El texto 'VS' y el tiempo deben tener espacio limitado para no empujar a los logos */
+.vs-text {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #FFD700;
+    margin: 0 5px; /* Espacio mínimo */
+    flex-shrink: 0; /* Evita que el VS se comprima */
+}
+
+.game-time-display {
+    font-size: 0.7em;
+    font-weight: 500;
+    margin-top: 5px;
+    opacity: 0.8;
+}
+/* CLASE EXISTENTE: .lista-estadisticas */
+.lista-estadisticas {
+  /* Se mantiene el 50% en Web / 100% en Móvil */
+  flex: 1 1 calc(50% - 10px); 
+  
+  /* CRUCIAL: Permite el scroll horizontal. Esto es necesario para que el efecto sticky funcione. */
+  overflow-x: scroll; 
+  overflow-y: hidden; 
+  
+  /* Se añade un contexto para el elemento 'sticky' */
+  position: relative; 
+  padding: 0;
+}
+
+/* --- AJUSTE MEDIA QUERY para Móviles (Donde el espacio es más amplio) --- */
+@media (max-width: 730px) {
+    /* Aquí podemos permitir que los logos sean un poco más grandes, 
+       ya que la tarjeta toma casi todo el ancho de la pantalla */
+    .team-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .vs-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* 🎯 Ajuste Final a la Primera Columna (NAME) */
+.GridEstadisticas > div:first-child {
+  /* Hacemos la columna pegajosa (sticky) */
+  position: sticky;
+  
+  /* La pegamos al borde izquierdo del elemento scroll */
+  left: 0;
+  
+  /* Asegura que ocupe el espacio de la columna 150px */
+  width: 100%; 
+  box-sizing: border-box; 
+  
+  /* Asegura que el contenido quede por encima al hacer scroll */
+  background-color: #333; 
+  z-index: 2; 
+  
+  /* Alineación */
+  justify-self: start; 
+  text-align: left; 
+  padding-left: 15px; 
+}
+
+/* IMPORTANTE: Ajustar el z-index del encabezado para que quede por encima del contenido */
+.GridEstadisticas.encabezados {
+    position: sticky; /* Hacer que el encabezado sea sticky también verticalmente (opcional) */
+    top: 0; /* Si quieres que el encabezado se pegue en el scroll vertical */
+    z-index: 3; /* Más alto que la columna NAME */
+}
+
+/* Ajustar el z-index del nombre en el encabezado para que quede bien */
+.GridEstadisticas.encabezados > div:first-child {
+    z-index: 4; /* El nombre del encabezado es lo más importante */
+    background-color: #444;
+}
+
+.GridEstadisticas {
+  display: grid;
+  gap: 10px;
+  
+  /* CLAVE: 150px fijo para NAME, 10 columnas más uniformes */
+  grid-template-columns: 150px repeat(10, 1fr);
+  
+  /* Mínimo de ancho que obliga al scroll */
+  min-width: 1000px; 
+  
+  /* ... otros estilos ... */
+}

@@ -93,538 +93,207 @@ function App() {
         {games.length === 0 ? (
           <p>Loading games...</p>
         ) : (
-          <div className="carrusel-react"> 
-  
-  {/* Contenedor interno de las tarjetas (donde se aplica el display: flex) */}
-  <div className="carrusel-inner-react">
-    {games.map((game) => (
-      
-      // Cada ítem individual es una tarjeta con la clase de snap-align
-      <div 
-        key={game.id} 
-        onClick={() => refreshData(game)} 
-        className="tarjeta-partido-react" // 👈 CLASE CRUCIAL para el snap
-      >
-        <div>
-          <div className="gameItem">
-            
-            {/* Logo del Equipo Local */}
-            <img
-              src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.homeTeamName}.png`}
-              alt={`Logo de ${game.homeTeamName}`}
-              onError={handleImageError}
-              className="team-logo" // Clase opcional para estilos de imagen
-            />
-            
-            <div className="vs-text">VS</div>
-            
-            {/* Logo del Equipo Visitante */}
-            <img
-              src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.awayTeamName}.png`}
-              alt={`Logo de ${game.awayTeamName}`}
-              onError={handleImageError}
-              className="team-logo" // Clase opcional para estilos de imagen
-            />
+          <div className="carrusel-react">
+
+            {/* Contenedor interno de las tarjetas (donde se aplica el display: flex) */}
+            <div className="carrusel-inner-react">
+              {games.map((game) => (
+
+                // Cada ítem individual es una tarjeta con la clase de snap-align
+                <div
+                  key={game.id}
+                  onClick={() => refreshData(game)}
+                  className="tarjeta-partido-react" // 👈 CLASE CRUCIAL para el snap
+                >
+                  <div>
+                    <div className="gameItem">
+
+                      {/* Logo del Equipo Local */}
+                      <img
+                        src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.homeTeamName}.png`}
+                        alt={`Logo de ${game.homeTeamName}`}
+                        onError={handleImageError}
+                        className="team-logo" // Clase opcional para estilos de imagen
+                      />
+
+                      <div className="vs-text">VS</div>
+
+                      {/* Logo del Equipo Visitante */}
+                      <img
+                        src={`https://lexfitcode.github.io/dummieweb/logos%20nba/${game.awayTeamName}.png`}
+                        alt={`Logo de ${game.awayTeamName}`}
+                        onError={handleImageError}
+                        className="team-logo" // Clase opcional para estilos de imagen
+                      />
+                    </div>
+
+                    <div className="game-time-display"> {game.time} </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <div className="game-time-display"> {game.time} </div> 
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
         )}
       </div>
       <h2>Players Stats</h2>
 
-      <div className="statusWrapper">
-        <div className="playerWrapper">
-          {playersHome.map((player, pIndex) => (
-            <div key={player.playerName ?? pIndex} className="cardHeight">
-              <div className="dataWrapper">
-                <div className="nameWrapper">
-                  <div className="playerPosition">
-                                                         <span className="playerPosition">
-                        {player.advanced.position}
-                      </span>
-                  <img
-                    src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
-                    alt={`Foto de ${player.playerName}`}
-                    onError={handleImageError}
-                    className="playerImage"
-                  />
+      <div className="container-listas">
 
-                  </div>
-                  <div className="gap">
-                    <div>
-                      <span className="playerName">{player.playerName}</span>
-   
-                    </div>
-                    <div className="generalWrapper">
-                      <span className="playePosition">
-                        PER : {player.advanced.playerEfficiencyRating}
-                      </span>
-                      <span
-                        className={
-                          player.advanced?.usagePercentage > 24
-                            ? "playePosition goodMatchup"
-                            : ""
-                        }
-                      >
-                        USG : {player.advanced.usagePercentage}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+        {/* --- Lista 1: Equipo Local (Quedará arriba en móvil) --- */}
+        {playersHome.length > 0 && (
+          <div className="lista-estadisticas">
 
-                <div className="relevantsWrapper">
-                  <div className="dvpWrapper">
-                    <span>DVP</span>
-                    <span
-                      className={
-                        player.dvp?.ptsGoodMatchup ? "goodMatchup" : ""
-                      }
-                    >
-                      PTS: {player.dvp?.pts}
-                    </span>
-                    <span
-                      className={
-                        player.dvp?.astGoodMatchup ? "goodMatchup" : ""
-                      }
-                    >
-                      AST: {player.dvp?.ast}
-                    </span>
-                    <span
-                      className={player.dvp?.rebGoodMatchu ? "goodMatchup" : ""}
-                    >
-                      REB: {player.dvp?.reb}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Pace</span>
-                    <span
-                      className={
-                        player.pace?.team.lastThree > 100 ? "goodMatchup" : ""
-                      }
-                    >
-                      {" "}
-                      {player.pace?.team.lastThree}
-                    </span>
-
-                    <span
-                      className={
-                        player.pace?.against?.lastThree > 100
-                          ? "goodMatchup"
-                          : ""
-                      }
-                    >
-                      {" "}
-                      vs {player.pace?.against?.lastThree}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Points relevants</span>
-                    <span
-                      className={
-                        player.advanced?.trueShootingPercentage > 0.5
-                          ? "goodMatchup"
-                          : ""
-                      }
-                    >
-                      TS {player.advanced?.trueShootingPercentage}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Rebounds relevants</span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.defensiveReboundPercentage > 30
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.defensiveReboundPercentage > 25
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.defensiveReboundPercentage > 8
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.defensiveReboundPercentage > 10
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.defensiveReboundPercentage > 18
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
-                            ""
-                      }
-                    >
-                      D-REB {player.advanced?.defensiveReboundPercentage}
-                    </span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.offensiveReboundPercentage > 12
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.offensiveReboundPercentage > 10
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.offensiveReboundPercentage > 2
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.offensiveReboundPercentage > 3
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.offensiveReboundPercentage > 6
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
-                            ""
-                      }
-                    >
-                      O-REB {player.advanced?.offensiveReboundPercentage}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Assists relevants</span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.assistPercentage > 15
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.assistPercentage > 18
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.assistPercentage > 35
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.assistPercentage > 25
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.assistPercentage > 20
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
-                            ""
-                      }
-                    >
-                      A-Per {player.advanced?.assistPercentage}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="games">
-                <div>
-                  <div className="gameWrapper">
-                    <span>DATE</span>
-                    <span>MIN</span>
-                    <span>PTS</span>
-                    <span>AST</span>
-                    <span>REB</span>
-                  </div>
-                  {Object.values(player.games?.lastGames?.games ?? {}).map(
-                    (game, gIndex) => (
-                      <div key={gIndex} className="gameWrapper">
-                        <span>{game?.date?.toString() ?? "-"}</span>
-                        <span>{game?.min ?? "-"}</span>
-                        <span>{game?.pts ?? "-"}</span>
-                        <span>{game?.ast ?? "-"}</span>
-                        <span>{game?.reb ?? "-"}</span>
-                      </div>
-                    )
-                  )}
-                </div>
-                <div>
-                  <div className="gameWrapper">
-                    <span>DATE</span>
-                    <span>MIN</span>
-                    <span>PTS</span>
-                    <span>AST</span>
-                    <span>REB</span>
-                  </div>
-                  {Object.values(player.games?.lastAgainst?.games ?? {})
-                    .length > 0 ? (
-                    // Caso: Hay juegos para mostrar
-
-                    Object.values(player.games?.lastAgainst?.games ?? {}).map(
-                      (game, gIndex) => (
-                        <>
-                          <div key={gIndex} className="gameWrapper">
-                            <span>{game?.date?.toString() ?? "-"}</span>
-                            <span>{game?.min ?? "-"}</span>
-                            <span>{game?.pts ?? "-"}</span>
-                            <span>{game?.ast ?? "-"}</span>
-                            <span>{game?.reb ?? "-"}</span>
-                          </div>
-                        </>
-                      )
-                    )
-                  ) : (
-                    // Caso: There's no games to show (el "else")
-                    <div className="noGames">There's no games to show</div>
-                  )}
-                </div>
-              </div>
+            {/* Encabezados (NAME con ancho fijo 150px) */}
+            <div className="GridEstadisticas encabezados">
+              <div>NAME</div>
+              <div>POS</div>
+              <div>PER</div>
+              <div>USG</div>
+              <div>PTS</div>
+              <div>TS</div>
+              <div>REB</div>
+              <div>D-REB</div>
+              <div>O-REB</div>
+              <div>ASIST</div>
+              <div>A-PER</div>
             </div>
-          ))}
-        </div>
-        <div className="playerWrapper">
-          {playersAway.map((player, pIndex) => (
-            <div key={player.playerName ?? pIndex} className="cardHeight">
-              <div className="dataWrapper">
-                <div className="nameWrapper">
-                  <div className="playerPosition">
-                                                         <span className="playerPosition">
-                        {player.advanced.position}
-                      </span>
-                  <img
-                    src={`https://lexfitcode.github.io/dummieweb/nbaPlayers/${player.playerTeam}/${player.playerId}.png`}
-                    alt={`Foto de ${player.playerName}`}
-                    onError={handleImageError}
-                    className="playerImage"
-                  />
 
-                  </div>
-                  <div className="gap">
-                    <div>
-                      <span className="playerName">{player.playerName}</span>
-   
-                    </div>
-                    <div className="generalWrapper">
-                      <span className="playePosition">
-                        PER : {player.advanced.playerEfficiencyRating}
-                      </span>
-                      <span
-                        className={
-                          player.advanced?.usagePercentage > 24
-                            ? "playePosition goodMatchup"
-                            : ""
-                        }
-                      >
-                        USG : {player.advanced.usagePercentage}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relevantsWrapper">
-                  <div className="dvpWrapper">
-                    <span>DVP</span>
-                    <span
-                      className={
-                        player.dvp?.ptsGoodMatchup ? "goodMatchup" : ""
-                      }
-                    >
-                      PTS: {player.dvp?.pts}
-                    </span>
-                    <span
-                      className={
-                        player.dvp?.astGoodMatchup ? "goodMatchup" : ""
-                      }
-                    >
-                      AST: {player.dvp?.ast}
-                    </span>
-                    <span
-                      className={player.dvp?.rebGoodMatchu ? "goodMatchup" : ""}
-                    >
-                      REB: {player.dvp?.reb}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Pace</span>
-                    <span
-                      className={
-                        player.pace?.team.lastThree > 100 ? "goodMatchup" : ""
-                      }
-                    >
-                      {" "}
-                      {player.pace?.team.lastThree}
-                    </span>
-
-                    <span
-                      className={
-                        player.pace?.against?.lastThree > 100
-                          ? "goodMatchup"
-                          : ""
-                      }
-                    >
-                      {" "}
-                      vs {player.pace?.against?.lastThree}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Points relevants</span>
-                    <span
-                      className={
-                        player.advanced?.trueShootingPercentage > 0.5
-                          ? "goodMatchup"
-                          : ""
-                      }
-                    >
-                      TS {player.advanced?.trueShootingPercentage}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Rebounds relevants</span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.defensiveReboundPercentage > 30
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.defensiveReboundPercentage > 25
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.defensiveReboundPercentage > 8
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.defensiveReboundPercentage > 10
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.defensiveReboundPercentage > 18
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+            {/* Filas de Datos */}
+            {playersHome.map((player) => (
+              <div className="GridEstadisticas" key={player.playerId}>
+                <div>{player.playerName}</div>
+                <div>{player.advanced.position}</div>
+                <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
+                <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
+                <div className={player.dvp.ptsGoodMatchup}>{player.dvp.pts}</div>
+                <div className={player.advanced.trueShootingPercentage > .500 ? "goodMatchup" : ""}>{player.advanced.trueShootingPercentage}</div>
+                <div className={player.dvp.rebGoodMatchup}>{player.dvp.reb}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.defensiveReboundPercentage > 30 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.defensiveReboundPercentage > 25 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.defensiveReboundPercentage > 18 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.defensiveReboundPercentage > 10 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.defensiveReboundPercentage > 8 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
                             ""
-                      }
-                    >
-                      D-REB {player.advanced?.defensiveReboundPercentage}
-                    </span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.offensiveReboundPercentage > 12
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.offensiveReboundPercentage > 10
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.offensiveReboundPercentage > 2
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.offensiveReboundPercentage > 3
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.offensiveReboundPercentage > 6
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                }>{player.advanced.defensiveReboundPercentage}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.offensiveReboundPercentage > 12 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.offensiveReboundPercentage > 10 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.offensiveReboundPercentage > 8 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.offensiveReboundPercentage > 7 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.offensiveReboundPercentage > 6 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
                             ""
-                      }
-                    >
-                      O-REB {player.advanced?.offensiveReboundPercentage}
-                    </span>
-                  </div>
-                  <div className="dvpWrapper">
-                    <span>Assists relevants</span>
-                    <span
-                      className={
-                        // 1. Centro (C) y su umbral (ej. > 12)
-                        player.advanced?.position === "C" &&
-                        player.advanced?.assistPercentage > 15
-                          ? "goodMatchup"
-                          : // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
-                          player.advanced?.position === "PF" &&
-                            player.advanced?.assistPercentage > 18
-                          ? "goodMatchup"
-                          : // 3. Base (PG) y su umbral (ej. > 8)
-                          player.advanced?.position === "PG" &&
-                            player.advanced?.assistPercentage > 35
-                          ? "goodMatchup"
-                          : // 4. Escolta (SG) y su umbral (ej. > 7)
-                          player.advanced?.position === "SG" &&
-                            player.advanced?.assistPercentage > 25
-                          ? "goodMatchup"
-                          : // 5. El Resto y su umbral (ej. > 6)
-                          player.advanced?.position === "SF" &&
-                            player.advanced?.assistPercentage > 20
-                          ? "goodMatchup"
-                          : // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                }>{player.advanced.offensiveReboundPercentage}</div>
+                <div className={player.dvp.astGoodMatchup}>{player.dvp.ast}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.assistPercentage > 15 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.assistPercentage > 18 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.assistPercentage > 35 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.assistPercentage > 25 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.assistPercentage > 20 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
                             ""
-                      }
-                    >
-                      A-Per {player.advanced?.assistPercentage}
-                    </span>
-                  </div>
-                </div>
+                }>{player.advanced.assistPercentage}</div>
               </div>
-              <div className="games">
-                <div>
-                  <div className="gameWrapper">
-                    <span>DATE</span>
-                    <span>MIN</span>
-                    <span>PTS</span>
-                    <span>AST</span>
-                    <span>REB</span>
-                  </div>
-                  {Object.values(player.games?.lastGames?.games ?? {}).map(
-                    (game, gIndex) => (
-                      <div key={gIndex} className="gameWrapper">
-                        <span>{game?.date?.toString() ?? "-"}</span>
-                        <span>{game?.min ?? "-"}</span>
-                        <span>{game?.pts ?? "-"}</span>
-                        <span>{game?.ast ?? "-"}</span>
-                        <span>{game?.reb ?? "-"}</span>
-                      </div>
-                    )
-                  )}
-                </div>
-                <div>
-                  <div className="gameWrapper">
-                    <span>DATE</span>
-                    <span>MIN</span>
-                    <span>PTS</span>
-                    <span>AST</span>
-                    <span>REB</span>
-                  </div>
-                  {Object.values(player.games?.lastAgainst?.games ?? {})
-                    .length > 0 ? (
-                    // Caso: Hay juegos para mostrar
+            ))}
+          </div>
+        )}
+        {/* --- Lista 2: Equipo Visitante (Quedará abajo en móvil) --- */}
+        {playersAway.length > 0 && (
+          <div className="lista-estadisticas">
 
-                    Object.values(player.games?.lastAgainst?.games ?? {}).map(
-                      (game, gIndex) => (
-                        <>
-                          <div key={gIndex} className="gameWrapper">
-                            <span>{game?.date?.toString() ?? "-"}</span>
-                            <span>{game?.min ?? "-"}</span>
-                            <span>{game?.pts ?? "-"}</span>
-                            <span>{game?.ast ?? "-"}</span>
-                            <span>{game?.reb ?? "-"}</span>
-                          </div>
-                        </>
-                      )
-                    )
-                  ) : (
-                    // Caso: There's no games to show (el "else")
-                    <div className="noGames">There's no games to show</div>
-                  )}
-                </div>
-              </div>
+            {/* Encabezados */}
+            <div className="GridEstadisticas encabezados">
+              <div>NAME</div>
+              <div>POS</div>
+              <div>PER</div>
+              <div>USG</div>
+              <div>PTS</div>
+              <div>TS</div>
+              <div>REB</div>
+              <div>D-REB</div>
+              <div>O-REB</div>
+              <div>ASIST</div>
+              <div>A-PER</div>
             </div>
-          ))}
-        </div>
+
+            {/* Filas de Datos */}
+            {playersAway.map((player) => (
+              <div className="GridEstadisticas" key={player.playerId}>
+                <div>{player.playerName}</div>
+                <div>{player.advanced.position}</div>
+                <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
+                <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
+                <div className={player.dvp.ptsGoodMatchup}>{player.dvp.pts}</div>
+                <div className={player.advanced.trueShootingPercentage > .500 ? "goodMatchup" : ""}>{player.advanced.trueShootingPercentage}</div>
+                <div className={player.dvp.rebGoodMatchup}>{player.dvp.reb}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.defensiveReboundPercentage > 30 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.defensiveReboundPercentage > 25 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.defensiveReboundPercentage > 18 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.defensiveReboundPercentage > 10 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.defensiveReboundPercentage > 8 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                }>{player.advanced.defensiveReboundPercentage}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.offensiveReboundPercentage > 12 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.offensiveReboundPercentage > 10 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.offensiveReboundPercentage > 8 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.offensiveReboundPercentage > 7 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.offensiveReboundPercentage > 6 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                }>{player.advanced.offensiveReboundPercentage}</div>
+                <div className={player.dvp.astGoodMatchup}>{player.dvp.ast}</div>
+                <div className={
+                  // 1. Centro (C) y su umbral (ej. > 12)
+                  player.advanced.position === "C" && player.advanced.assistPercentage > 15 ? "goodMatchup" :
+                    // 2. Ala-Pívot (PF) y su umbral (ej. > 10)
+                    player.advanced.position === "PF" && player.advanced.assistPercentage > 18 ? "goodMatchup" :
+                      // 3. Base (PG) y su umbral (ej. > 8)
+                      player.advanced.position === "PG" && player.advanced.assistPercentage > 35 ? "goodMatchup" :
+                        // 4. Escolta (SG) y su umbral (ej. > 7)
+                        player.advanced.position === "SG" && player.advanced.assistPercentage > 25 ? "goodMatchup" :
+                          // 5. El Resto y su umbral (ej. > 6)
+                          player.advanced.position === "SF" && player.advanced.assistPercentage > 20 ? "goodMatchup" :
+                            // Valor por defecto si ninguna de las condiciones anteriores es verdadera
+                            ""
+                }>{player.advanced.assistPercentage}</div>
+              </div>
+            ))}
+          </div>
+
+        )}
       </div>
+
     </>
   );
 }
