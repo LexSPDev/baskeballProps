@@ -123,7 +123,7 @@
 
 /* 3. MEDIA QUERY (Móvil) */
 
-@media (max-width: 730px) {
+@media (max-width: 750px) {
   
   .container-listas {
     /* Las listas se apilan (una arriba, la otra abajo) */
@@ -198,7 +198,7 @@
 }
 
 /* --- MEDIA QUERY para Móviles (Ancho <= 600px) --- */
-@media (max-width: 730px) {
+@media (max-width: 750px) {
     .carrusel-react {
       /* Habilita el scroll horizontal para móvil */
       overflow-x: scroll; 
@@ -301,7 +301,7 @@
 }
 
 /* --- AJUSTE MEDIA QUERY para Móviles (Donde el espacio es más amplio) --- */
-@media (max-width: 730px) {
+@media (max-width: 750px) {
     /* Aquí podemos permitir que los logos sean un poco más grandes, 
        ya que la tarjeta toma casi todo el ancho de la pantalla */
     .team-logo {
@@ -327,7 +327,7 @@
   box-sizing: border-box; 
   
   /* Asegura que el contenido quede por encima al hacer scroll */
-  background-color: #333; 
+  background-color: #545454; 
   z-index: 2; 
   
   /* Alineación */

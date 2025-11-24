@@ -165,9 +165,9 @@ function App() {
                 <div>{player.advanced.position}</div>
                 <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
                 <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
-                <div className={player.dvp.ptsGoodMatchup}>{player.dvp.pts}</div>
+                <div className={player.dvp.ptsGoodMatchup ? "goodMatchup": ""}>{player.dvp.pts}</div>
                 <div className={player.advanced.trueShootingPercentage > .500 ? "goodMatchup" : ""}>{player.advanced.trueShootingPercentage}</div>
-                <div className={player.dvp.rebGoodMatchup}>{player.dvp.reb}</div>
+                <div className={player.dvp.rebGoodMatchup ? "goodMatchup": ""}>{player.dvp.reb}</div>
                 <div className={
                   // 1. Centro (C) y su umbral (ej. > 12)
                   player.advanced.position === "C" && player.advanced.defensiveReboundPercentage > 30 ? "goodMatchup" :
@@ -196,7 +196,7 @@ function App() {
                             // Valor por defecto si ninguna de las condiciones anteriores es verdadera
                             ""
                 }>{player.advanced.offensiveReboundPercentage}</div>
-                <div className={player.dvp.astGoodMatchup}>{player.dvp.ast}</div>
+                <div className={player.dvp.astGoodMatchup ? "goodMatchup": ""}>{player.dvp.ast}</div>
                 <div className={
                   // 1. Centro (C) y su umbral (ej. > 12)
                   player.advanced.position === "C" && player.advanced.assistPercentage > 15 ? "goodMatchup" :
@@ -241,9 +241,9 @@ function App() {
                 <div>{player.advanced.position}</div>
                 <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
                 <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
-                <div className={player.dvp.ptsGoodMatchup}>{player.dvp.pts}</div>
+                <div className={player.dvp.ptsGoodMatchup ? "goodMatchup": ""}>{player.dvp.pts}</div>
                 <div className={player.advanced.trueShootingPercentage > .500 ? "goodMatchup" : ""}>{player.advanced.trueShootingPercentage}</div>
-                <div className={player.dvp.rebGoodMatchup}>{player.dvp.reb}</div>
+                <div className={player.dvp.rebGoodMatchup ? "goodMatchup": ""}>{player.dvp.reb}</div>
                 <div className={
                   // 1. Centro (C) y su umbral (ej. > 12)
                   player.advanced.position === "C" && player.advanced.defensiveReboundPercentage > 30 ? "goodMatchup" :
@@ -272,7 +272,7 @@ function App() {
                             // Valor por defecto si ninguna de las condiciones anteriores es verdadera
                             ""
                 }>{player.advanced.offensiveReboundPercentage}</div>
-                <div className={player.dvp.astGoodMatchup}>{player.dvp.ast}</div>
+                <div className={player.dvp.astGoodMatchup ? "goodMatchup": ""}>{player.dvp.ast}</div>
                 <div className={
                   // 1. Centro (C) y su umbral (ej. > 12)
                   player.advanced.position === "C" && player.advanced.assistPercentage > 15 ? "goodMatchup" :
