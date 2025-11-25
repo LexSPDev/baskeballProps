@@ -176,6 +176,8 @@ function App() {
             <div className="GridEstadisticas encabezados">
               <div>NAME</div>
               <div>POS</div>
+              <div>P VS</div>
+              <div>P T</div>
               <div>PER</div>
               <div>USG</div>
               <div>PTS</div>
@@ -197,6 +199,8 @@ function App() {
               >
                 <div>{player.playerName}</div>
                 <div>{player.advanced.position}</div>
+                <div>{player.pace.against.lastThree}</div>
+                <div>{player.pace.team.lastThree}</div>
                 <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
                 <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
                 <div className={player.dvp.ptsGoodMatchup ? "goodMatchup" : ""}>{player.dvp.pts}</div>
@@ -240,6 +244,8 @@ function App() {
             <div className="GridEstadisticas encabezados">
               <div>NAME</div>
               <div>POS</div>
+                            <div>P VS</div>
+              <div>P T</div>
               <div>PER</div>
               <div>USG</div>
               <div>PTS</div>
@@ -254,13 +260,15 @@ function App() {
             {/* Filas de Datos */}
             {playersAway.map((player) => (
               // Evento onClick para abrir el modal
-              <div 
+                            <div 
                 className="GridEstadisticas" 
                 key={player.playerId} 
                 onClick={() => openPlayerModal(player, player.playerName)}
               >
                 <div>{player.playerName}</div>
                 <div>{player.advanced.position}</div>
+                <div>{player.pace.against.lastThree}</div>
+                <div>{player.pace.team.lastThree}</div>
                 <div className={player.advanced.playerEfficiencyRating > 18 ? "goodMatchup" : ""}>{player.advanced.playerEfficiencyRating}</div>
                 <div className={player.advanced.usagePercentage > 23 ? "goodMatchup" : ""}>{player.advanced.usagePercentage}</div>
                 <div className={player.dvp.ptsGoodMatchup ? "goodMatchup" : ""}>{player.dvp.pts}</div>

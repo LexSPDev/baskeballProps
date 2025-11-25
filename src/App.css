@@ -101,7 +101,7 @@
   gap: 10px;
   
   /* CLAVE: 150px fijo para 'NAME', y 10 columnas más uniformes (1fr). */
-  grid-template-columns: 150px repeat(10, 1fr);
+  grid-template-columns: 150px repeat(12, 1fr);
   
   /* Mínimo de ancho para forzar el scroll horizontal */
   min-width: 1000px; 
@@ -354,7 +354,7 @@
   gap: 10px;
   
   /* CLAVE: 150px fijo para NAME, 10 columnas más uniformes */
-  grid-template-columns: 150px repeat(10, 1fr);
+  grid-template-columns: 150px repeat(12, 1fr);
   
   /* Mínimo de ancho que obliga al scroll */
   min-width: 1000px; 
